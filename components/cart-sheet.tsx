@@ -1,12 +1,13 @@
 "use client"
 
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet" // Named imports
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter, SheetDescription } from "@/components/ui/sheet" // Named imports
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { useCart } from "@/context/cart-context"
 import Image from "next/image"
 import { MinusCircle, PlusCircle, Trash2 } from "lucide-react"
 import Link from "next/link"
+import { useId } from "react" // Add this import
 
 interface CartSheetProps {
   isOpen: boolean
@@ -16,12 +17,22 @@ interface CartSheetProps {
 export function CartSheet({ isOpen, onOpenChange }: CartSheetProps) {
   // Named export
   const { cart, updateQuantity, removeFromCart, subtotal, deliveryFee, total, cartRestaurantName } = useCart()
+  const titleId = useId() // Add this line
+  const descriptionId = useId() // Add this line
 
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent className="flex flex-col">
+      <SheetContent className="flex flex-col" aria-labelledby={titleId} aria-describedby={descriptionId}>
+        {" "}
+        {/* Add aria-labelledby and aria-describedby */}
         <SheetHeader>
-          <SheetTitle>Your Cart {cartRestaurantName && `from ${cartRestaurantName}`}</SheetTitle>
+          <SheetTitle id={titleId}>Your Cart {cartRestaurantName && `from ${cartRestaurantName}`}</SheetTitle>{" "}
+          {/* Add id */}
+          <SheetDescription id={descriptionId} className="sr-only">
+            {" "}
+            {/* Add SheetDescription with id and sr-only */}
+            Review your selected items and proceed to checkout.
+          </SheetDescription>
         </SheetHeader>
         <div className="flex-1 overflow-y-auto py-4">
           {cart.length === 0 ? (

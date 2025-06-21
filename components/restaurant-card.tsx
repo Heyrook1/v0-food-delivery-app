@@ -43,7 +43,7 @@ export function RestaurantCard({
           <span className="mx-1">•</span>
           <span>{deliveryTime}</span>
           <span className="mx-1">•</span>
-          <span>{priceRange}</span>
+          <span>TL</span> {/* Changed from {priceRange} */}
         </div>
       </CardContent>
     </Card>

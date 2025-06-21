@@ -7,15 +7,12 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { loginAction } from "@/app/actions"
 import Link from "next/link"
-import { useRouter } from "next/navigation" // Import useRouter
+import { useRouter } from "next/navigation"
 
 export function LoginForm() {
+  // Named export
   const [state, action, isPending] = useActionState(loginAction, null)
   const router = useRouter()
-
-  // Handle successful login redirect (action handles it directly now)
-  // You might still want to show a success message before redirecting
-  // if the action didn't handle it.
 
   return (
     <Card className="w-full max-w-md mx-auto">

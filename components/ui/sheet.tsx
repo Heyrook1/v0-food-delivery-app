@@ -44,3 +44,6 @@ export const SheetFooter = ({ children }: { children: React.ReactNode }) => (
 )
 
 export const SheetClose = Dialog.Close
+
+// This line allows both named and default imports for Sheet
+export { Sheet as default }

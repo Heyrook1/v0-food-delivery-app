@@ -1,9 +1,10 @@
 import Link from "next/link"
-import { CategoryFilter } from "@/components/category-filter" // Correct: Named import
-import { RestaurantCard } from "@/components/restaurant-card" // Correct: Named import
-import { restaurants } from "@/lib/data" // Correct: Named import
+import { CategoryFilter } from "@/components/category-filter" // Named import
+import { RestaurantCard } from "@/components/restaurant-card" // Named import
+import { restaurants } from "@/lib/data" // Named import
 
 export default function HomePage() {
+  // Default export
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <CategoryFilter />

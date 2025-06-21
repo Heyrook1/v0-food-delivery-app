@@ -20,6 +20,7 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
+  // Named export
   const [cart, setCart] = useState<CartItem[]>([])
   const [cartRestaurantId, setCartRestaurantId] = useState<string | null>(null)
   const [cartRestaurantName, setCartRestaurantName] = useState<string | null>(null)
@@ -50,7 +51,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const addToCart = useCallback(
     (item: MenuItem, restaurant: Restaurant) => {
       if (cartRestaurantId && cartRestaurantId !== restaurant.id) {
-        // Optionally, ask user if they want to clear existing cart
         if (
           !confirm(
             `Your cart contains items from ${cartRestaurantName}. Do you want to clear it and add items from ${restaurant.name}?`,
@@ -96,19 +96,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const updateQuantity = useCallback((menuItemId: string, quantity: number) => {
     setCart((prevCart) => {
-      return prevCart
+      const updatedCart = prevCart
         .map((item) => (item.menuItemId === menuItemId ? { ...item, quantity: Math.max(0, quantity) } : item))
         .filter((item) => item.quantity > 0)
-    })
 
-    setCart((prevCart) => {
-      const newCart = prevCart.filter((item) => item.quantity > 0)
-
-      if (newCart.length === 0) {
+      if (updatedCart.length === 0) {
         setCartRestaurantId(null)
         setCartRestaurantName(null)
       }
-      return newCart
+      return updatedCart
     })
   }, [])
 
@@ -139,6 +135,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useCart() {
+  // Named export
   const context = useContext(CartContext)
   if (context === undefined) {
     throw new Error("useCart must be used within a CartProvider")

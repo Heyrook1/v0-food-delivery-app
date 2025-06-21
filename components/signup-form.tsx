@@ -9,6 +9,7 @@ import { signupAction } from "@/app/actions"
 import Link from "next/link"
 
 export function SignupForm() {
+  // Named export
   const [state, action, isPending] = useActionState(signupAction, null)
 
   return (

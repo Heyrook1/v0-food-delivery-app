@@ -5,10 +5,11 @@ import { Home, History, ShoppingCart, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useCart } from "@/context/cart-context"
 import { useState } from "react"
-import { CartSheet } from "@/components/cart-sheet" // Correct: Named import
+import { CartSheet } from "@/components/cart-sheet" // Named import
 import { usePathname } from "next/navigation"
 
 export default function BottomNavbar() {
+  // Default export
   const { cart } = useCart()
   const [isCartOpen, setIsCartOpen] = useState(false)
   const pathname = usePathname()

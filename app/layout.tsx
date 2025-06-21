@@ -2,10 +2,10 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { ModernNavbar } from "@/components/modern-navbar" // Correct: Named import
-import { CartProvider } from "@/context/cart-context" // Correct: Named import
-import { AuthProvider } from "@/components/auth-provider" // Correct: Named import
-import BottomNavbar from "@/components/bottom-navbar" // Correct: Default import
+import { ModernNavbar } from "@/components/modern-navbar" // Named import
+import { CartProvider } from "@/context/cart-context" // Named import
+import { AuthProvider } from "@/components/auth-provider" // Named import
+import BottomNavbar from "@/components/bottom-navbar" // Default import
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -26,12 +26,8 @@ export default function RootLayout({
         <AuthProvider>
           <CartProvider>
             <ModernNavbar />
-            <main className="pb-16 md:pb-0">
-              {" "}
-              {/* Add padding-bottom for mobile */}
-              {children}
-            </main>
-            <BottomNavbar /> {/* Render BottomNavbar */}
+            <main className="pb-16 md:pb-0">{children}</main>
+            <BottomNavbar />
           </CartProvider>
         </AuthProvider>
       </body>

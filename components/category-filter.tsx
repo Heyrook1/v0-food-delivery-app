@@ -1,5 +1,5 @@
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area" // Correct: Named imports
-import { Button } from "@/components/ui/button" // Correct: Named import
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area" // Named imports
+import { Button } from "@/components/ui/button" // Named import
 
 const categories = [
   "All",
@@ -18,7 +18,7 @@ const categories = [
 ]
 
 export function CategoryFilter() {
-  // Explicitly named export
+  // Named export
   return (
     <div className="py-4 border-b bg-white">
       <ScrollArea className="w-full whitespace-nowrap">

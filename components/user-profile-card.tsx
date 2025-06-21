@@ -11,6 +11,7 @@ interface UserProfileCardProps {
 }
 
 export function UserProfileCard({ name, email, address, avatarUrl }: UserProfileCardProps) {
+  // Named export
   return (
     <Card className="w-full max-w-lg mx-auto">
       <CardHeader className="flex flex-col items-center text-center">

@@ -1,6 +1,6 @@
 "use client"
 
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet" // Named imports
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { useCart } from "@/context/cart-context"
@@ -14,6 +14,7 @@ interface CartSheetProps {
 }
 
 export function CartSheet({ isOpen, onOpenChange }: CartSheetProps) {
+  // Named export
   const { cart, updateQuantity, removeFromCart, subtotal, deliveryFee, total, cartRestaurantName } = useCart()
 
   return (

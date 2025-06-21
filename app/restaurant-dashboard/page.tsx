@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Utensils, ListOrdered, PlusCircle } from "lucide-react"
 
 export default function RestaurantDashboardPage() {
+  // Default export for the page
   return (
     <div className="container mx-auto py-8 px-4 md:px-6">
       <h1 className="text-4xl font-bold mb-8 text-center">Restaurant Dashboard</h1>

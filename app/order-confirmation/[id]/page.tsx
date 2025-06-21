@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { mockUser } from "@/lib/data" // Import mockUser
+import { mockUser } from "@/lib/data"
 
 interface OrderConfirmationPageProps {
   params: {
@@ -12,6 +12,7 @@ interface OrderConfirmationPageProps {
 }
 
 export default function OrderConfirmationPage({ params }: OrderConfirmationPageProps) {
+  // Default export for the page
   const order = mockUser.orders.find((o) => o.id === params.id)
 
   if (!order) {
@@ -98,7 +99,6 @@ export default function OrderConfirmationPage({ params }: OrderConfirmationPageP
               Your order is currently {order.status.toLowerCase()}. We'll notify you when it's{" "}
               {nextStatus.toLowerCase()}.
             </p>
-            {/* In a real app, this would update dynamically */}
             <Button variant="outline" className="mt-4 w-full">
               Refresh Status
             </Button>

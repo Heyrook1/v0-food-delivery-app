@@ -1,156 +1,105 @@
 "use server"
 
-import { redirect } from "next/navigation"
-import { createClient } from "@/lib/supabase/server" // Import server-side Supabase client
-import type { Order, CartItem, User } from "@/lib/data" // Keep types
-import { mockUser } from "@/lib/data" // Keep mockUser for order history simulation
+import { createClient } from "@/lib/supabase/server"
+import { v4 as uuid } from "uuid"
 
-// --- Supabase Auth Actions ---
-
-export async function loginAction(formData: FormData) {
-  const email = formData.get("email") as string
-  const password = formData.get("password") as string
-  const supabase = createClient()
-
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  })
-
-  if (error) {
-    console.error("Login error:", error.message)
-    return { success: false, message: error.message }
-  }
-
-  redirect("/profile") // Redirect to profile on successful login
+/**
+ * Common return type for all actions.
+ */
+type ActionResult = {
+  success: boolean
+  message: string
 }
 
-export async function signupAction(formData: FormData) {
-  const name = formData.get("name") as string // Supabase auth doesn't directly store name on signup
-  const email = formData.get("email") as string
-  const password = formData.get("password") as string
-  const supabase = createClient()
+/**
+ * LOGIN  --------------------------------------------------------------------
+ * Called by <LoginForm /> via `useActionState`.
+ */
+export async function loginAction(_prevState: ActionResult | null, formData: FormData): Promise<ActionResult> {
+  "use server"
 
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: {
-        full_name: name, // Store name in user_metadata
-      },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_VERCEL_URL || "http://localhost:3000"}/auth/callback`, // For email confirmation
-    },
-  })
+  const email = String(formData.get("email") || "")
+  const password = String(formData.get("password") || "")
+
+  if (!email || !password) {
+    return { success: false, message: "Email & password are required." }
+  }
+
+  const supabase = createClient()
+  const { error } = await supabase.auth.signInWithPassword({ email, password })
 
   if (error) {
-    console.error("Signup error:", error.message)
     return { success: false, message: error.message }
   }
 
   return {
     success: true,
-    message: "Account created successfully! Please check your email to confirm your account, then log in.",
+    message: "Logged in successfully. Redirecting…",
   }
 }
 
-export async function logoutAction() {
+/**
+ * SIGN-UP  -------------------------------------------------------------------
+ * Called by <SignupForm /> via `useActionState`.
+ */
+export async function signupAction(_prevState: ActionResult | null, formData: FormData): Promise<ActionResult> {
+  "use server"
+
+  const name = String(formData.get("name") || "")
+  const email = String(formData.get("email") || "")
+  const password = String(formData.get("password") || "")
+
+  if (!name || !email || !password) {
+    return { success: false, message: "All fields are required." }
+  }
+
   const supabase = createClient()
-  const { error } = await supabase.auth.signOut()
+  const { error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: { data: { full_name: name } },
+  })
 
   if (error) {
-    console.error("Logout error:", error.message)
     return { success: false, message: error.message }
   }
 
-  redirect("/login") // Redirect to login after logout
+  return {
+    success: true,
+    message: "Account created! Please check your email to confirm.",
+  }
 }
 
-export async function getCurrentUser(): Promise<User | null> {
-  const supabase = createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+/**
+ * PLACE ORDER  ---------------------------------------------------------------
+ * Called by <CheckoutForm /> via `useActionState`.
+ * NOTE: A real implementation would persist the order in your database.
+ */
+export async function placeOrderAction(_prevState: ActionResult | null, formData: FormData): Promise<ActionResult> {
+  "use server"
 
-  if (user) {
-    // In a real app, you'd fetch user details from your database
-    // For now, we'll combine Supabase user data with mockUser's orders/cart
-    return {
-      id: user.id,
-      name: user.user_metadata.full_name || user.email || "User",
-      email: user.email!,
-      address: mockUser.address, // Keep mock address for now
-      cart: mockUser.cart, // Keep mock cart for now
-      orders: mockUser.orders, // Keep mock orders for now
-    }
-  }
-  return null
-}
+  // Extract basic order info (sent from CheckoutForm)
+  const deliveryAddress = String(formData.get("deliveryAddress") || "")
+  const paymentMethod = String(formData.get("paymentMethod") || "")
+  const cartItems = JSON.parse(String(formData.get("cartItems") || "[]"))
+  const total = Number(formData.get("total") || 0)
 
-// --- Order Placement Action (remains largely the same, but uses mockUser for now) ---
-
-interface PlaceOrderState {
-  success: boolean
-  message: string
-  orderId?: string
-}
-
-export async function placeOrderAction(
-  prevState: PlaceOrderState | null,
-  formData: FormData,
-): Promise<PlaceOrderState> {
-  await new Promise((resolve) => setTimeout(resolve, 1500)) // Simulate network delay
-
-  const deliveryAddress = formData.get("deliveryAddress") as string
-  const paymentMethod = formData.get("paymentMethod") as string
-  const cartItemsJson = formData.get("cartItems") as string
-  const subtotal = Number.parseFloat(formData.get("subtotal") as string)
-  const deliveryFee = Number.parseFloat(formData.get("deliveryFee") as string)
-  const total = Number.parseFloat(formData.get("total") as string)
-  const restaurantId = formData.get("restaurantId") as string
-  const restaurantName = formData.get("restaurantName") as string
-
-  if (!deliveryAddress || !paymentMethod || !cartItemsJson || !restaurantId || !restaurantName) {
-    return { success: false, message: "Missing required order details." }
+  if (!deliveryAddress || !paymentMethod || cartItems.length === 0) {
+    return { success: false, message: "Missing order details." }
   }
 
-  let cartItems: CartItem[]
-  try {
-    cartItems = JSON.parse(cartItemsJson)
-  } catch (error) {
-    return { success: false, message: "Invalid cart items data." }
-  }
+  // TODO: Replace with real DB insert (Supabase table `orders`, etc.)
+  const fakeOrderId = `order-${uuid().slice(0, 8)}`
 
-  if (cartItems.length === 0) {
-    return { success: false, message: "Cart is empty." }
-  }
-
-  // In a real app, you'd get the actual logged-in user's ID here
-  const currentUser = await getCurrentUser()
-  const userId = currentUser?.id || "anonymous" // Fallback for unauthenticated orders
-
-  // Simulate saving the order to mockUser's orders
-  const newOrderId = `order-${Date.now()}`
-  const newOrder: Order = {
-    id: newOrderId,
-    userId: userId,
-    restaurantId,
-    restaurantName,
-    items: cartItems,
-    subtotal,
-    deliveryFee,
-    total,
-    status: "Confirmed", // Initial status
+  console.info("[placeOrderAction] New order:", {
+    id: fakeOrderId,
     deliveryAddress,
     paymentMethod,
-    createdAt: new Date().toISOString(),
+    total,
+  })
+
+  return {
+    success: true,
+    message: `Order placed! Your order ID is ${fakeOrderId}.`,
   }
-
-  // For demonstration, we'll still add to mockUser's orders
-  // In a real app, this would be a database insert
-  mockUser.orders.unshift(newOrder)
-  mockUser.cart = [] // Clear user's cart after placing order
-
-  console.log("Order placed:", newOrder)
-
-  redirect(`/order-confirmation/${newOrderId}`)
 }

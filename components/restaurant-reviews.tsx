@@ -24,6 +24,7 @@ interface RestaurantReviewsProps {
 }
 
 export function RestaurantReviews({ reviews: initialReviews, restaurantId }: RestaurantReviewsProps) {
+  // Named export
   const [reviews, setReviews] = useState(initialReviews)
   const [newReview, setNewReview] = useState({ user: "", rating: 0, comment: "" })
 

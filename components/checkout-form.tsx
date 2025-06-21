@@ -12,9 +12,10 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Separator } from "@/components/ui/separator"
 import { useCart } from "@/context/cart-context"
 import { placeOrderAction } from "@/app/actions"
-import { mockUser } from "@/lib/data" // For default address
+import { mockUser } from "@/lib/data"
 
 export function CheckoutForm() {
+  // Named export
   const { cart, subtotal, deliveryFee, total, clearCart, cartRestaurantId, cartRestaurantName } = useCart()
   const [step, setStep] = useState(1) // 1: Delivery, 2: Payment, 3: Review
   const [deliveryAddress, setDeliveryAddress] = useState(mockUser.address || "")

@@ -6,11 +6,12 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Search, Menu, X, LogOut, User } from "lucide-react"
 import { useState } from "react"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet" // Correct: Named imports
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet" // Named imports
 import { useSession } from "@supabase/auth-helpers-react"
 import { createClient } from "@/lib/supabase/client"
 
 export function ModernNavbar() {
+  // Named export
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const session = useSession()
   const isAuthenticated = !!session?.user
@@ -95,7 +96,6 @@ export function ModernNavbar() {
                   Home
                 </Button>
               </Link>
-              {/* Cart button removed from here, now in BottomNavbar */}
               {isAuthenticated ? (
                 <>
                   <Link href="/profile" passHref>

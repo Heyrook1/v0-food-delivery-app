@@ -1,16 +1,17 @@
-import { UserProfileCard } from "@/components/user-profile-card"
+import { UserProfileCard } from "@/components/user-profile-card" // Named import
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { History, Settings, Heart, ShoppingCart } from "lucide-react"
-import { mockUser } from "@/lib/data" // Keep mockUser for order history simulation
+import { mockUser } from "@/lib/data"
 import { useCart } from "@/context/cart-context" // Client component, so useCart is fine
 import Link from "next/link"
 import Image from "next/image"
 import { Separator } from "@/components/ui/separator"
-import { createClient } from "@/lib/supabase/server" // Server-side Supabase client
+import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 
 export default async function UserProfilePage() {
+  // Default export for the page
   const supabase = createClient()
   const {
     data: { user },
@@ -20,15 +21,13 @@ export default async function UserProfilePage() {
     redirect("/login?message=Please log in to view your profile.")
   }
 
-  // For now, we'll combine Supabase user data with mockUser's orders/cart
-  // In a real app, you'd fetch these from your database based on user.id
   const currentUser = {
     id: user.id,
     name: user.user_metadata.full_name || user.email || "User",
     email: user.email!,
-    address: mockUser.address, // Using mock address for now
-    cart: mockUser.cart, // Using mock cart for now
-    orders: mockUser.orders, // Using mock orders for now
+    address: mockUser.address,
+    cart: mockUser.cart,
+    orders: mockUser.orders,
   }
 
   return (
@@ -42,16 +41,13 @@ export default async function UserProfilePage() {
             name={currentUser.name}
             email={currentUser.email}
             address={currentUser.address}
-            // avatarUrl={user.user_metadata.avatar_url || "/placeholder-avatar.png"} // Use Supabase avatar if available
+            // avatarUrl={user.user_metadata.avatar_url || "/placeholder-avatar.png"}
           />
         </div>
 
         {/* User Actions/Sections */}
         <div className="md:col-span-2 space-y-6">
-          {/* Current Cart Section (This section needs to be a client component or fetch cart client-side) */}
-          {/* For simplicity, we'll keep it as is, but note that useCart is client-side */}
-          <ClientCartSection />
-
+          <ClientCartSection /> {/* Render ClientCartSection */}
           {/* Order History Section */}
           <Card>
             <CardHeader>
@@ -90,7 +86,6 @@ export default async function UserProfilePage() {
               )}
             </CardContent>
           </Card>
-
           {/* Favorite Restaurants Section */}
           <Card>
             <CardHeader>
@@ -107,7 +102,6 @@ export default async function UserProfilePage() {
               </Link>
             </CardContent>
           </Card>
-
           {/* Account Settings Section */}
           <Card>
             <CardHeader>
@@ -130,6 +124,7 @@ export default async function UserProfilePage() {
 
 // Client component to use useCart hook
 function ClientCartSection() {
+  // Named export (implicitly, as it's only used within this file)
   const { cart, subtotal, deliveryFee, total } = useCart()
 
   return (

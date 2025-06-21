@@ -1,7 +1,7 @@
-import Image from "next/image" // Correct: Default import
-import { Card, CardContent } from "@/components/ui/card" // Correct: Named imports
-import { Star } from "lucide-react" // Correct: Named import
-import { Badge } from "@/components/ui/badge" // Correct: Named import
+import Image from "next/image" // Default import
+import { Card, CardContent } from "@/components/ui/card" // Named imports
+import { Star } from "lucide-react" // Named import
+import { Badge } from "@/components/ui/badge" // Named import
 
 interface RestaurantCardProps {
   name: string
@@ -13,7 +13,7 @@ interface RestaurantCardProps {
 }
 
 export function RestaurantCard({
-  // Explicitly named export
+  // Named export
   name,
   imageUrl,
   rating,

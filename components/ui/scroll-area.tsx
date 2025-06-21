@@ -5,17 +5,11 @@ import React from "react"
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
 import { cn } from "@/lib/utils"
 
-/**
- * ScrollArea – a thin wrapper around @radix-ui/react-scroll-area
- * – exported as *named* components to match existing imports.
- */
-
 export interface ScrollAreaProps extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
   /** Optional className merged with defaults */
   className?: string
 }
 
-/** Root area that adds custom scrollbar styles */
 export const ScrollArea = React.forwardRef<React.ElementRef<typeof ScrollAreaPrimitive.Root>, ScrollAreaProps>(
   function ScrollArea({ className, children, ...props }, ref) {
     return (
@@ -28,7 +22,6 @@ export const ScrollArea = React.forwardRef<React.ElementRef<typeof ScrollAreaPri
   },
 )
 
-/** Horizontal/vertical scrollbar (exported so CategoryFilter can import it) */
 export const ScrollBar = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.Scrollbar>,
   React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Scrollbar>
@@ -50,3 +43,6 @@ export const ScrollBar = React.forwardRef<
   )
 })
 ScrollBar.displayName = "ScrollBar"
+
+// This line allows both named and default imports for ScrollArea
+export { ScrollArea as default }

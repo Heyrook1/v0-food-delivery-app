@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Star, Clock, MapPin, ShoppingCart } from "lucide-react"
 import { restaurants } from "@/lib/data"
-import { RestaurantReviews } from "@/components/restaurant-reviews"
-import { useCart } from "@/context/cart-context" // Import useCart
+import { RestaurantReviews } from "@/components/restaurant-reviews" // Named import
+import { useCart } from "@/context/cart-context" // Named import
 
 interface RestaurantDetailPageProps {
   params: {
@@ -16,8 +16,9 @@ interface RestaurantDetailPageProps {
 }
 
 export default function RestaurantDetailPage({ params }: RestaurantDetailPageProps) {
+  // Default export for the page
   const restaurant = restaurants.find((r) => r.id === params.id)
-  const { addToCart } = useCart() // Get addToCart from context
+  const { addToCart } = useCart()
 
   if (!restaurant) {
     notFound()

@@ -2,10 +2,10 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { ModernNavbar } from "@/components/modern-navbar"
-import { CartProvider } from "@/context/cart-context"
-import { AuthProvider } from "@/components/auth-provider"
-import { BottomNavbar } from "@/components/bottom-navbar" // Import BottomNavbar
+import { ModernNavbar } from "@/components/modern-navbar" // Correct: Named import
+import { CartProvider } from "@/context/cart-context" // Correct: Named import
+import { AuthProvider } from "@/components/auth-provider" // Correct: Named import
+import BottomNavbar from "@/components/bottom-navbar" // Correct: Default import
 
 const inter = Inter({ subsets: ["latin"] })
 

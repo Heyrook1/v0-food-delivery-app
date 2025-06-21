@@ -4,9 +4,9 @@ import Link from "next/link"
 import Image from "next/image"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Search, Menu, X, LogOut, User } from "lucide-react" // Removed ShoppingCart, User
+import { Search, Menu, X, LogOut, User } from "lucide-react"
 import { useState } from "react"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet" // Correct: Named imports
 import { useSession } from "@supabase/auth-helpers-react"
 import { createClient } from "@/lib/supabase/client"
 
@@ -143,7 +143,6 @@ export function ModernNavbar() {
             </nav>
           </SheetContent>
         </Sheet>
-        {/* CartSheet is now rendered within BottomNavbar */}
       </div>
     </header>
   )

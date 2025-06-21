@@ -2,10 +2,6 @@
 
 import type React from "react"
 
-/* ----------------------------------------------------------------
- * Minimal “Sheet / Drawer” component – Radix Dialog underneath
- * ---------------------------------------------------------------- */
-
 import * as Dialog from "@radix-ui/react-dialog"
 import { cn } from "@/lib/utils"
 
@@ -13,10 +9,8 @@ export function Sheet(props: Dialog.DialogProps) {
   return <Dialog.Root {...props} />
 }
 
-/* ---------- Triggers ---------- */
 export const SheetTrigger = Dialog.Trigger
 
-/* ---------- Content  ---------- */
 export function SheetContent({
   side = "right",
   className,
@@ -40,7 +34,6 @@ export function SheetContent({
   )
 }
 
-/* ---------- Optional helpers (stubs) ---------- */
 export const SheetHeader = ({ children }: { children: React.ReactNode }) => (
   <div className="mb-4 border-b pb-2">{children}</div>
 )
@@ -50,5 +43,4 @@ export const SheetFooter = ({ children }: { children: React.ReactNode }) => (
   <div className="mt-4 border-t pt-4">{children}</div>
 )
 
-/* ---------- Close shorthand (optional) ---------- */
 export const SheetClose = Dialog.Close

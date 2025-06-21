@@ -1,7 +1,7 @@
 import Link from "next/link"
-import { CategoryFilter } from "@/components/category-filter"
-import { RestaurantCard } from "@/components/restaurant-card"
-import { restaurants } from "@/lib/data" // Import restaurants from data.ts
+import { CategoryFilter } from "@/components/category-filter" // Correct: Named import
+import { RestaurantCard } from "@/components/restaurant-card" // Correct: Named import
+import { restaurants } from "@/lib/data" // Correct: Named import
 
 export default function HomePage() {
   return (

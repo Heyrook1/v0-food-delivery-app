@@ -59,10 +59,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           return
         }
         setCart([])
+        setCartRestaurantId(restaurant.id)
+        setCartRestaurantName(restaurant.name)
+      } else {
+        setCartRestaurantId(restaurant.id)
+        setCartRestaurantName(restaurant.name)
       }
-
-      setCartRestaurantId(restaurant.id)
-      setCartRestaurantName(restaurant.name)
 
       setCart((prevCart) => {
         const existingItem = prevCart.find((cartItem) => cartItem.menuItemId === item.id)
@@ -94,9 +96,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const updateQuantity = useCallback((menuItemId: string, quantity: number) => {
     setCart((prevCart) => {
-      const newCart = prevCart
+      return prevCart
         .map((item) => (item.menuItemId === menuItemId ? { ...item, quantity: Math.max(0, quantity) } : item))
         .filter((item) => item.quantity > 0)
+    })
+
+    setCart((prevCart) => {
+      const newCart = prevCart.filter((item) => item.quantity > 0)
 
       if (newCart.length === 0) {
         setCartRestaurantId(null)

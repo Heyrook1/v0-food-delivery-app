@@ -1,7 +1,7 @@
-import Image from "next/image"
-import { Card, CardContent } from "@/components/ui/card"
-import { Star } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
+import Image from "next/image" // Correct: Default import
+import { Card, CardContent } from "@/components/ui/card" // Correct: Named imports
+import { Star } from "lucide-react" // Correct: Named import
+import { Badge } from "@/components/ui/badge" // Correct: Named import
 
 interface RestaurantCardProps {
   name: string
@@ -13,6 +13,7 @@ interface RestaurantCardProps {
 }
 
 export function RestaurantCard({
+  // Explicitly named export
   name,
   imageUrl,
   rating,
@@ -43,7 +44,7 @@ export function RestaurantCard({
           <span className="mx-1">•</span>
           <span>{deliveryTime}</span>
           <span className="mx-1">•</span>
-          <span>TL</span> {/* Changed from {priceRange} */}
+          <span>TL</span>
         </div>
       </CardContent>
     </Card>

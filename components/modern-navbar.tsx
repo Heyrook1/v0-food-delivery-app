@@ -5,16 +5,26 @@ import Image from "next/image"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Search, Menu, X, LogOut, User } from "lucide-react"
-import { useState } from "react"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet" // Named imports
-import { useSession } from "@supabase/auth-helpers-react"
+import { useState, useEffect } from "react"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { createClient } from "@/lib/supabase/client"
+import type { Session } from "@supabase/supabase-js"
 
 export function ModernNavbar() {
-  // Named export
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const session = useSession()
+  const [session, setSession] = useState<Session | null>(null)
   const isAuthenticated = !!session?.user
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+    return () => subscription.unsubscribe()
+  }, [])
 
   const handleLogout = async () => {
     const supabase = createClient()

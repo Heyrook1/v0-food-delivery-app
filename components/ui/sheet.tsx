@@ -3,6 +3,18 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
+// Context must be declared FIRST before any component that references it
+interface SheetContextValue {
+  open: boolean
+  onOpenChange?: (open: boolean) => void
+}
+
+const SheetContext = React.createContext<SheetContextValue>({ open: false })
+
+function useSheet() {
+  return React.useContext(SheetContext)
+}
+
 interface SheetProps {
   open?: boolean
   onOpenChange?: (open: boolean) => void
@@ -15,17 +27,6 @@ export function Sheet({ open = false, onOpenChange, children }: SheetProps) {
       {children}
     </SheetContext.Provider>
   )
-}
-
-interface SheetContextValue {
-  open: boolean
-  onOpenChange?: (open: boolean) => void
-}
-
-const SheetContext = React.createContext<SheetContextValue>({ open: false })
-
-function useSheet() {
-  return React.useContext(SheetContext)
 }
 
 export function SheetTrigger({

@@ -1,49 +1,93 @@
 "use client"
 
 import type React from "react"
-
 import * as Dialog from "@radix-ui/react-dialog"
 import { cn } from "@/lib/utils"
 
-export function Sheet(props: Dialog.DialogProps) {
-  return <Dialog.Root {...props} />
+export function Sheet({ children, ...props }: Dialog.DialogProps) {
+  return <Dialog.Root {...props}>{children}</Dialog.Root>
 }
 
-export const SheetTrigger = Dialog.Trigger
+export function SheetTrigger({ children, ...props }: React.ComponentPropsWithoutRef<typeof Dialog.Trigger>) {
+  return <Dialog.Trigger {...props}>{children}</Dialog.Trigger>
+}
+
+export function SheetClose({ children, ...props }: React.ComponentPropsWithoutRef<typeof Dialog.Close>) {
+  return <Dialog.Close {...props}>{children}</Dialog.Close>
+}
+
+export function SheetPortal({ children }: { children: React.ReactNode }) {
+  return <Dialog.Portal>{children}</Dialog.Portal>
+}
+
+export function SheetOverlay({ className, ...props }: React.ComponentPropsWithoutRef<typeof Dialog.Overlay>) {
+  return (
+    <Dialog.Overlay
+      className={cn("fixed inset-0 z-50 bg-black/40 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className)}
+      {...props}
+    />
+  )
+}
 
 export function SheetContent({
   side = "right",
   className,
+  children,
   ...props
-}: React.ComponentPropsWithoutRef<typeof Dialog.Content> & { side?: "left" | "right" | "top" | "bottom" }) {
+}: React.ComponentPropsWithoutRef<typeof Dialog.Content> & {
+  side?: "left" | "right" | "top" | "bottom"
+}) {
   return (
     <Dialog.Portal>
-      <Dialog.Overlay className="fixed inset-0 bg-black/40 backdrop-blur-sm" />
+      <SheetOverlay />
       <Dialog.Content
-        {...props}
         className={cn(
-          "fixed z-50 bg-white shadow-lg outline-none",
-          side === "right" && "right-0 top-0 h-full w-80 sm:w-96",
-          side === "left" && "left-0 top-0 h-full w-80 sm:w-96",
-          side === "bottom" && "left-0 bottom-0 w-full h-3/5 rounded-t-lg",
-          side === "top" && "left-0 top-0 w-full h-3/5 rounded-b-lg",
+          "fixed z-50 bg-white shadow-xl outline-none overflow-y-auto p-6",
+          "data-[state=open]:animate-in data-[state=closed]:animate-out",
+          side === "right" && "right-0 top-0 h-full w-80 sm:w-96 data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right",
+          side === "left"  && "left-0 top-0 h-full w-80 sm:w-96 data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left",
+          side === "bottom" && "bottom-0 left-0 w-full max-h-[60vh] rounded-t-xl data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom",
+          side === "top"   && "top-0 left-0 w-full max-h-[60vh] rounded-b-xl data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top",
           className,
         )}
-      />
+        {...props}
+      >
+        {children}
+      </Dialog.Content>
     </Dialog.Portal>
   )
 }
 
-export const SheetHeader = ({ children }: { children: React.ReactNode }) => (
-  <div className="mb-4 border-b pb-2">{children}</div>
-)
-export const SheetTitle = Dialog.Title
-export const SheetDescription = Dialog.Description
-export const SheetFooter = ({ children }: { children: React.ReactNode }) => (
-  <div className="mt-4 border-t pt-4">{children}</div>
-)
+export function SheetHeader({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div className={cn("flex flex-col gap-1.5 mb-4", className)} {...props}>
+      {children}
+    </div>
+  )
+}
 
-export const SheetClose = Dialog.Close
+export function SheetFooter({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div className={cn("flex flex-col gap-2 mt-4 pt-4 border-t", className)} {...props}>
+      {children}
+    </div>
+  )
+}
 
-// This line allows both named and default imports for Sheet
-export { Sheet as default }
+export function SheetTitle({ className, children, ...props }: React.ComponentPropsWithoutRef<typeof Dialog.Title>) {
+  return (
+    <Dialog.Title className={cn("text-lg font-semibold", className)} {...props}>
+      {children}
+    </Dialog.Title>
+  )
+}
+
+export function SheetDescription({ className, children, ...props }: React.ComponentPropsWithoutRef<typeof Dialog.Description>) {
+  return (
+    <Dialog.Description className={cn("text-sm text-muted-foreground", className)} {...props}>
+      {children}
+    </Dialog.Description>
+  )
+}
+
+export default Sheet
